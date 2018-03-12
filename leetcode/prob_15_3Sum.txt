@@ -1,0 +1,87 @@
+---Problem Description---
+
+Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+Note: The solution set must not contain duplicate triplets.
+                               0  1  2  3   4   5
+For example, given array S = [-1, 0, 1, 2, -1, -4],
+
+
+
+(-1,0,1),
+if sorted, [-4, -1, -1, 0, 1, 2]
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+
+
+---My approach---
+
+In double nested loop, get all the possible pairs and store in map<int third elem, array of index>
+	If both pair is not the third number needed to get zero, add to map.
+
+Go through S in a loop, look up the number of S from the map as a key
+	if map has the number, add the pair of three values to list
+
+---My answer/attempt---
+** This solution creates duplicates in the output, therefore it needs to be fixed.
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+    	int n = nums.length;
+    	if (n < 3) {
+    		return null;
+    	}
+
+    	List<List<Integer>> output = new List<List<Integer>>();
+    	HashMap<Integer, int[]> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+        	for (int j = i + 1; j < n; j++) {
+        		int sumPair = nums[i] + nums[j];
+        		int temp = Math.abs(sumPair - 0);
+        		int thirdNumNeeded =  (sumPair > 0) ? -1 * temp : temp;
+        		if (!map.containsKey(sumPair) && nums[i] != thirdNumNeeded && nums[j] != thirdNumNeeded) {
+        			int[] indexOfPair = new int[] {i, j};
+        			map.put(thirdNumNeeded, indexOfPair);
+        		}
+        	}
+        }
+
+        HashSet<String> setOfSumOfThreeIndices = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+        	int x = nums[i];
+        	if (map.containsKey(x)) {
+    			List<Integer> onePair = new ArrayList<>();
+    			onePair.add(nums[i]);
+    			onePair.add(nums[map.get(x)[0]]);
+    			onePair.add(nums[map.get(x)[1]]);
+    			output.add(onePair);	
+        	}
+        }
+        return output;
+    }
+}
+
+---Solution---
+** Solution by shpolsky
+public List<List<Integer>> threeSum(int[] num) {
+    Arrays.sort(num);
+    List<List<Integer>> res = new LinkedList<>(); 
+    for (int i = 0; i < num.length-2; i++) {
+        if (i == 0 || (i > 0 && num[i] != num[i-1])) {
+            int lo = i+1, hi = num.length-1, sum = 0 - num[i];
+            while (lo < hi) {
+                if (num[lo] + num[hi] == sum) {
+                    res.add(Arrays.asList(num[i], num[lo], num[hi]));
+                    while (lo < hi && num[lo] == num[lo+1]) lo++;
+                    while (lo < hi && num[hi] == num[hi-1]) hi--;
+                    lo++; hi--;
+                } else if (num[lo] + num[hi] < sum) lo++;
+                else hi--;
+           }
+        }
+    }
+    return res;
+}
