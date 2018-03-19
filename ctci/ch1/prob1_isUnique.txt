@@ -1,0 +1,70 @@
+- Problem: 
+	1.1 Is Unique: Implement an algorithm to determine whether a string has all unique characters.
+    What if you can't use additional data structures?
+
+- My approach 1 (with additional data structure): 
+	- Questions that I can ask:
+		- str contains white space? 
+		- what kind of string is it?
+		- what to return when the size of str is 0 or when str is null?
+	- Assume the string is a Ascii string(has 256 possible chars)
+	- Create a hashset<Character>
+	- Iterate through the string, check each char whether the set contains the character or not
+		- If the set contains the char, immediately return false. 
+		- Keep adding each char when the set doesn't contain the char
+	- At the end of the loop, we can safely return true
+	- Time complexity : O(N)
+	- Space complexity: O(N)
+
+- My solution:
+
+public boolean isAllUnique(String str) {
+	if (str == null || str.length() == 0) {
+		return false;  // need to ask this corner case whether it should return true or false
+	}
+
+	int n = str.length();
+	HashSet<Integer> set = new HashSet<>();
+	for (int i = 0; i < n; i++) {
+		char currChar = str.charAt(i);
+		if (set.contains(currChar)) {
+			return false;
+		}
+		set.add(currChar);
+	}
+	return true;
+}
+
+- Possible test cases:
+	- strF = "absa"
+	- strT = "abcde"
+	- strF = ""
+	- strF = null
+
+
+- My approach 2(the case we can't use additional data structures):
+	- for each char in str, compare with all the following chars and see if there is any duplicate
+	- Time complexity: O(N^2)
+	- Space complexity: O(1)
+	- Sinse the time complexity is significantly worse than my approach 1, I am not going to implement this
+	approach, but it is basically nested for loops.
+
+
+- Solutions & What I learned:
+	- The solution uses a boolean array of size 256 which is the size of ascii chars. 
+	- It's the same approach as using the hashtable, but since the size of boolean array don't grow more than 256,
+	the space complexity if O(c) where c is the size of ascii chars. It's better approach when the size of str is 
+	really big.
+
+
+
+
+
+
+
+
+
+
+
+
+
