@@ -1,0 +1,97 @@
+- Problem: 
+	3.1 Three in One: Describe how you could use a single array to implement three stacks.
+
+- My approach:
+	- Assume the type of the stack is integer
+	- Use 3 pointers to represents the top stack index for each stack in the array
+	- For stack0, use index that % 3 is 0
+	- For stack1, use index that % 3 is 1
+	- For stack2, use index that % 3 is 2
+
+- My solution:
+
+public ThreeStackInOne {
+	private int stack0Index;
+	private int stack1Index;
+	private int stack2Index;
+	private int stack0Size;
+	private int stack1Size;
+	private int stack2Size;
+	private int[] arr;
+	private static final int SOME_LARGE_SIZE = 1000;
+
+	public ThreeStackInOne() {
+		stack0Index = 0;
+		stack1Index = 1;
+		stack2Index = 2;
+		stack0Size = 0;
+		stack1Size = 0;
+		stack2Size = 0;
+		arr = new int[SOME_LARGE_SIZE];
+	}
+
+	/*
+		stackNum: specify which stack to push elem to
+	*/
+	public void push(int stackNum, int elem) {
+		switch(stackNum) {
+			case 1:
+				if (stack0Size == 0) {
+					arr[stack0Index] = elem;
+				} else {
+					stack0Index += 3;
+					arr[stack0Index] = elem;
+				}
+				stack0Size++;
+				break;
+
+			case 2:
+				if (stack1Size == 0) {
+					arr[stack1Index] = elem;
+				} else {
+					stack1Index += 3;
+					arr[stack1Index] = elem;
+				}
+				stack1Size++;
+				break;
+
+			case 2:
+				if (stack2Size == 0) {
+					arr[stack2Index] = elem;
+				} else {
+					stack2Index += 3;
+					arr[stack2Index] = elem;
+				}
+				stack2Size++;
+				break;
+		}
+	}
+
+	public int pop(int stackNum) {
+		int output = 0;
+		switch(stackNum) {
+			case 1:
+				if (stack0Size > 0) {
+					output = arr[stack0Index];
+					stack0Index -= 3;
+					stack0Size--;
+				} 
+				break;
+			case 2:
+				if (stack1Size > 0) {
+					output = arr[stack1Index];
+					stack1Index -= 3;
+					stack1Size--;
+				} 
+				break;
+
+			case 2:
+				if (stack2Size > 0) {
+					output = arr[stack2Index];
+					stack2Index -= 3;
+					stack2Size--;
+				} 
+				break;
+		}	
+	}
+}
