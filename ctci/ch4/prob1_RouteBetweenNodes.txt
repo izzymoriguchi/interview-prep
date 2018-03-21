@@ -1,0 +1,34 @@
+- Problem: 
+	4.1: Route Between Nodes: Given a directed graph, design an algorithm to find out whether there is a
+    route between two nodes.
+
+- My approach: 
+	- Use breadth first search to traverse the tree, and check if the current node is the same as the target 
+
+- My solution:
+
+	public boolean routeExist(Node n1, Node n2, Graph g) {
+		Queue<Node> queue = new LinkedList<>();
+		queue.add(n1);
+		n1.visited = true;
+		while (!queue.isEmpty()) {
+			Node w = queue.remove();
+			for (Node v : g.adj.get(w)) { // should show all the adjacency nodes
+				if (!v.visited) {
+					if (v.value == n2.value) {
+						return true;
+					}
+					queue.add(v);
+					v.visited = true;
+				}
+			} 
+		}
+		return false;
+	}
+
+- Solutions & What I learned:
+	- Know when to use BFS vs DFS. DFS could be a bit simpler to implement since it's done with simple recursion.
+
+
+
+
