@@ -1,0 +1,106 @@
+- Problem: 
+	Given two binary strings, return their sum (also a binary string).
+
+	For example,
+	a = "11"
+	b = "1"
+	Return "100".
+
+- My approach: 
+	- The output length will be at most a.length() + b.length()
+	- 
+	carry:1
+	[0 1 1]
+	[0 0 1]
+	-------
+     1 0 0
+
+    [0 1 1]
+	[0 0 1]
+	-------
+     1 1 0
+
+    - make a char array for both a and b. set the size as a.length() + b.length(). copy over bits
+    - initialize carry as 0.
+    - iterate from left to right (bit by bit) and add carry and 2 values
+    	- if sum is 2
+
+
+- My initial solution:
+   	// This solution is incorrect, so learned from the solution below
+	class Solution {
+	    public String addBinary(String a, String b) {
+	        char[] arrA = new char[a.length() + b.length()];
+	        char[] arrB = new char[a.length() + b.length()];
+	        char[] outArr = new char[a.length() + b.length()];
+	        int counter = arrA.length - 1;
+	        int n = arrA.length;
+	        for (int i = a.length() - 1; i >= 0; i--) {
+	        	arrA[counter] = a.charAt(i);
+	        	counter--;
+	        }
+	        counter = n - 1;
+	        for (int i = b.length() - 1; i >= 0; i--) {
+	        	arrB[counter] = b.charAt(i);
+	        	counter--;
+	        }
+
+	        int carry = 0;
+	        for (int i = n - 1; i >= 0; i--) {
+
+	        	int sum = carry + arrA[i];
+	        	if (sum == 2) {
+	        		carry = 1;
+	        		sum = 0;
+	        	}
+
+	        	sum = sum + arrB[i];
+	        	if (sum == 2) {
+	        		carry = 1;
+	        		sum = 0;
+	        	}
+	        	outArr[i] = sum;
+	        }
+
+	        // trim leading zeros
+	        int i = 0;
+	        while (i < outArr.length && outArr[i] == 0) {
+	        	i++;
+	        }
+
+	        return new String(outArr, i, outArr.length - i + 1);
+	    }
+	}
+
+- Solutions:
+	public class Solution {
+	    public String addBinary(String a, String b) {
+	        StringBuilder sb = new StringBuilder();
+	        int i = a.length() - 1; 
+	        int j = b.length() -1; 
+	        int carry = 0;
+	        while (i >= 0 || j >= 0) {
+	            int sum = carry;
+	            if (j >= 0) {
+	            	sum += b.charAt(j--) - '0';
+	            }
+	            if (i >= 0) {
+	            	sum += a.charAt(i--) - '0';
+	            }
+	            sb.append(sum % 2);
+	            carry = sum / 2;
+	        }
+
+	        if (carry != 0) {
+	        	sb.append(carry);
+	        }
+	        return sb.reverse().toString();
+	    }
+	}
+
+    - Key point:
+    	- Do not need additional space, and we can only computer for the values in a and b
+    	- Can compute carry by using division
+    	- Can use % operator to outout the correct bit addition. Addition result can be 0, 1, 2, or 3. So sum % 2 gives either 0 or 1. 
+    	- At the end, if we have carry as 1, then we need to append 1.
+
