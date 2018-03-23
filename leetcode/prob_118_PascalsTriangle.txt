@@ -1,0 +1,59 @@
+/*
+Given numRows, generate the first numRows of Pascal's triangle.
+
+For example, given numRows = 5,
+Return
+
+[
+ [1],
+ [1,1],
+ [1,2,1],
+ [1,3,3,1],
+ [1,4,6,4,1]
+]
+
+My approach:
+- Iterate numRows times
+- Inside the loop, create a list of size numRows and loop for numRows times.
+- when j is 0 or the length of the array at i, add 1 at that point.
+- other case, add elem one above and one diagonally left above.
+
+Check:
+- numRows = 5
+- lst = [[1], [1,1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]
+- i = 5
+- j = 4
+- innerLst = 
+- sum = 6
+- 
+
+*/
+
+import java.io.*;
+import java.util.*;
+
+class MyCode {
+  public static void main (String[] args) {
+    System.out.println(generate(0));
+      
+  }
+  
+  public static List<List<Integer>> generate(int numRows) {
+      List<List<Integer>> lst = new ArrayList<>();
+      
+      for (int i = 0; i < numRows; i++) {
+          List<Integer> innerLst = new ArrayList<>();
+          
+          for (int j = 0; j < i + 1; j++) {
+              if (j == 0 || j == i) {
+                  innerLst.add(1);
+              } else {
+                  int sum = lst.get(i - 1).get(j - 1) + lst.get(i - 1).get(j);
+                  innerLst.add(sum);
+              }
+          }
+          lst.add(innerLst);
+      }
+      return lst;
+  }
+}
