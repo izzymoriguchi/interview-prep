@@ -1,0 +1,112 @@
+- Problem: 
+	Given a binary tree, return the level order traversal of its nodes' values. 
+	(ie, from left to right, level by level).
+
+	For example:
+	Given binary tree [3,9,20,null,null,15,7],
+	    3
+	   / \
+	  9   20
+	 / \  / \
+	1  4 15  7
+
+
+	    3
+	   / \
+	  9   20
+	      / \
+	     15  7
+	   
+	return its level order traversal as:
+	[
+	  [3],
+	  [9,20],
+	  [15,7]
+	]
+
+- Result:
+	Came up with an approach witin 10mins, and tried implementing the approach within 30mins but did not complete it.
+
+- Timeline:
+	0 - 10min: think about how to solve, come up with my approach
+	10 - 30min: try to implemente my approach
+
+- My through process/approach:
+	use queue
+	newLength = 2
+	q:[]
+
+	output:
+	[
+	    [3]
+	]
+
+	start with a queue with root node
+
+	while queue is not empty
+	    pop item from queue --> p
+	    add p.left to queue
+	    add p.right to queue
+
+- My attempt:
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> output = new ArrayList<>();
+        if (root == null) {
+            return output;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int levelSize = 1;
+        List<Integer> oneLevel = new ArrayList<>();
+        
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.remove();
+            if (oneLevel.size() >= levelSize) {
+                oneLevel = new ArrayList<>();  
+            }
+            oneLevel.add(node.val);
+            
+            if (node.left != null) {
+                queue.add(node.left);
+//                 levelSize++;
+            } 
+            
+            if (node.right != null) {
+                queue.add(node.right);
+//                 levelSize++;
+            }  
+        }
+    }
+
+- Struggle:
+	I wasn't sure how to detect the end of one level and add the right amount of nodes in a list for one level.
+
+- Solution:
+	** solution by marcusgao with my comments **
+	List<List<Integer>> res = new ArrayList<>();  
+	if (root == null) return res;  
+	Queue<TreeNode> queue = new LinkedList<>();  
+	queue.add(root);  
+	while (!queue.isEmpty()) {  
+	　　List<Integer> level = new ArrayList<>();  
+	　　int cnt = queue.size();  // before poll, get the size
+	　　for (int i = 0; i < cnt; i++) {  // loop cnt times
+	　　　　TreeNode node = queue.poll();  
+	　　　　level.add(node.val);  
+	　　　　if (node.left != null) {  
+	　　　　　　queue.add(node.left);  
+	　　　　}
+	　　　　if (node.right != null) {  
+	　　　　　　queue.add(node.right);  
+	　　　　}  
+	　　}  
+	　　res.add(level);   
+	}  
+	return res;
+
+- Comments/things that I learned:
+	- I was on the right approach, but could not figure out how to get the size of one level.
+		- By creating size variable "cnt" before poping, we can just make a use of for loop that iterate for cnt times.
+		- In the for loop we can add value of node into the list of one level, and after the loop ended, we can add
+		the level list into the output list.
+
